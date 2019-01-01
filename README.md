@@ -41,3 +41,17 @@ grader ALL=(ALL) ALL
 ```
 
 ## Step 4: Create SSH keys for `grader`
+IMPORTANT: at this stage, make sure to exit the remote Ubuntu instance, and in your local host machine, run
+```
+ssh-keygen
+```
+to generate the public-private key pair for `grader`.  
+Now that we have the key pairs, log back into the remote instance as `ubuntu` user and as `sudo`, run the following in the `/home` directory:
+```
+sudo mkdir grader/.ssh
+sudo touch grader/.ssh/authorized_keys
+```
+Now back on your local host machine, `cat` the contents of the `.pub` key that was created in the previous step and copy it to your clipboard. And over on your remote machine, using either `nano` or `vim`, `sudo` edit the contents of `authorized_keys` and paste the contents of the `.pub` key from the local host machine. Save and close the file.   
+At this point, confirm that you can now login to the remote instance as `grader` using the `ssh -i` command and passing with it the file of the private key that was generated in the previous step.  
+
+## Step 5: 
