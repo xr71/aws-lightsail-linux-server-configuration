@@ -30,4 +30,14 @@ I then verified this user creation by using `finger`. First, I installed `finger
 ```
 sudo apt install finger
 ```
-and then I checked the grader user by running `finger grader`.
+and then I checked the grader user by running `finger grader` and can confirm that a user account and a `/home/grader` dir were created for the `grader` user.  
+However, at this point, the `grader` user does not sudo access yet. Run the following in the remote terminal:
+```
+sudo vim /etc/sudoers.d/grader
+```
+and press `i` to enter `insert` mode and type the following text:
+```
+grader ALL=(ALL) ALL
+```
+
+## Step 4: Create SSH keys for `grader`
