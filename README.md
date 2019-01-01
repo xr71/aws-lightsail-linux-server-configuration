@@ -88,7 +88,7 @@ sudo apt install libapache2-mod-wsgi
 sudo apt install postgresql
 ```
 
-## Step 6: Configure Pip, Virtualenv, Flask, and Dependencies
+## Step 7: Configure Pip, Virtualenv, Flask, and Dependencies
 Back in the remote instance terminal, run the following:
 ```
 sudo apt install python-pip
@@ -100,3 +100,13 @@ sudo chown grader:grader catalog
 cd catalog
 touch catalog.wsgi
 ```
+Edit the `catalog.wsgi` file using either `nano` or `vim` and add the following:  
+```
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0, "/var/www/catalog/")
+
+from catalog import app as application
+```
+Then save and exit the file. 
