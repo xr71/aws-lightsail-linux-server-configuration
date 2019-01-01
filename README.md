@@ -15,3 +15,8 @@ Because we have just initialized a new machine in the cloud, it is safe to immed
 sudo apt update
 sudo apt upgrade
 ```
+At this point, if the Ubuntu prompt states that a restart is required, run
+```
+sudo reboot
+```
+and then log back in from your host machine via ssh (remember to use the -i parameter with your .pem key)
