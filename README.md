@@ -54,4 +54,14 @@ sudo touch grader/.ssh/authorized_keys
 Now back on your local host machine, `cat` the contents of the `.pub` key that was created in the previous step and copy it to your clipboard. And over on your remote machine, using either `nano` or `vim`, `sudo` edit the contents of `authorized_keys` and paste the contents of the `.pub` key from the local host machine. Save and close the file.   
 At this point, confirm that you can now login to the remote instance as `grader` using the `ssh -i` command and passing with it the file of the private key that was generated in the previous step.  
 
-## Step 5: 
+## Step 5: Configure SSH Port 2200 and Enforce Authentication and Disable Root
+At this stage, using the `ubuntu` user again, log back into the remote instance if not already logged in, and run `sudo vim /etc/ssh/sshd_config`.  
+Uncomment the "Port" line and change 22 to 2200. Uncomment the "PermitRootLogin" line and modify its parameter to "no." Lastly, ensure that the "PasswordAuthentication" line states "no" and if it does not, please change it to "no."  
+
+Save the file and run `sudo service ssh restart` to ensure the changes are made effective.
+
+ONE IMPORTANT STEP TO NOTE HERE: With Amazon Lightsail, we will also need to go to the "Networking" tab for our instance, and ensure that we create an account Firewall rule. Clikc on "Add another" and select "Custom" for Application, "TCP" for Protocol, and use "2200" as the Port range. Save the rule.  
+
+Now, we can exit the current SSH session and log back in but this time with the added parameter of `-p 2200` and if everything was successful, we will be able to log back in as both `ubuntu` and `grader` users.  
+
+
