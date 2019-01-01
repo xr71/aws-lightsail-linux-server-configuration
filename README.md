@@ -132,9 +132,9 @@ Now, modify the create and modify our configuration file by running
 and pasting in the following contentns:
 ```
 <VirtualHost *:80>
-    ServerName 35.167.27.204
-    ServerAlias ec2-35-167-27-204.us-west-2.compute.amazonaws.com
-    ServerAdmin admin@35.167.27.204
+    ServerName 18.191.144.56
+    ServerAlias ec2-18-191-144-56.us-east-2.compute.amazonaws.com
+    ServerAdmin admin@18.191.144.56
     WSGIDaemonProcess catalog python-path=/var/www/catalog:/var/www/catalog/venv/lib/python2.7/site-packages
     WSGIProcessGroup catalog
     WSGIScriptAlias / /var/www/catalog/catalog.wsgi
