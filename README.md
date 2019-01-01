@@ -76,3 +76,7 @@ After verifying that these are all entered correctly, only then proceed to run t
 ```
 sudo ufw enable
 ```
+Press `y` and `Enter` when the confirmation dialog is presented. 
+Exit the SSH session and log back in to confirm that the rules are working and that UFW status is active. 
+
+## Step 6: 
