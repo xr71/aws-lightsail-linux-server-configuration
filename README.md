@@ -114,5 +114,15 @@ While still inside the `catalog` directory, make sure to
 TODO
 TODO
 TODO
-change the primary Flask file `app.py` to `__init__.py` by running `mv app.py __init__.py`
-
+change the primary Flask file `app.py` to `__init__.py` by running `mv app.py __init__.py`  
+Then run the following to create the right Python environment along with all the dependencies needed to run our Flask app:
+```
+sudo virtualenv venv
+source venv/bin/activate
+sudo chmod -R 777 venv
+ls -al (to confirm venv and its all file permissions)
+```
+Now we can install flask and all the other dependencies needed to run our webapp:
+```
+pip install Flask httplib2 oauth2client sqlalchemy psycopg2
+```
