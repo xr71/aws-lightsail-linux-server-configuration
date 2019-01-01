@@ -88,3 +88,15 @@ sudo apt install libapache2-mod-wsgi
 sudo apt install postgresql
 ```
 
+## Step 6: Configure Pip, Virtualenv, Flask, and Dependencies
+Back in the remote instance terminal, run the following:
+```
+sudo apt install python-pip
+sudo pip install virtualenv
+```  
+Now navigate to `/var/www` and `sudo mkdir catalog`.  Then run the following:
+```
+sudo chown grader:grader catalog
+cd catalog
+touch catalog.wsgi
+```
