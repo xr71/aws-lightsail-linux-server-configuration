@@ -65,3 +65,14 @@ ONE IMPORTANT STEP TO NOTE HERE: With Amazon Lightsail, we will also need to go 
 Now, we can exit the current SSH session and log back in but this time with the added parameter of `-p 2200` and if everything was successful, we will be able to log back in as both `ubuntu` and `grader` users.  
 
 
+## Step 6: Configuring Firewall (UFW)
+Log back in to the remote AWS instance and run the following:
+```
+sudo ufw allow 2200/tcp
+sudo ufw allow www
+sudo ufw allow ntp
+```
+After verifying that these are all entered correctly, only then proceed to run the next line:
+```
+sudo ufw enable
+```
