@@ -109,4 +109,10 @@ sys.path.insert(0, "/var/www/catalog/")
 
 from catalog import app as application
 ```
-Then save and exit the file. 
+Then save and exit the file.   
+While still inside the `catalog` directory, make sure to
+TODO
+TODO
+TODO
+change the primary Flask file `app.py` to `__init__.py` by running `mv app.py __init__.py`
+
