@@ -79,4 +79,12 @@ sudo ufw enable
 Press `y` and `Enter` when the confirmation dialog is presented. 
 Exit the SSH session and log back in to confirm that the rules are working and that UFW status is active. 
 
-## Step 6: 
+## Step 6: Web Server and Dependency Setup
+Back in the remote instance, run:
+```
+sudo apt install apache2
+sudo apt install git (if necessary)
+sudo apt install libapache2-mod-wsgi
+sudo apt install postgresql
+```
+
