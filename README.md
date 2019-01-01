@@ -126,3 +126,33 @@ Now we can install flask and all the other dependencies needed to run our webapp
 ```
 pip install Flask httplib2 oauth2client sqlalchemy psycopg2
 ```
+
+Now, modify the create and modify our configuration file by running
+`sudo vim /etc/apache2/sites-available/catalog.conf`
+and pasting in the following contentns:
+```
+<VirtualHost *:80>
+    ServerName 35.167.27.204
+    ServerAlias ec2-35-167-27-204.us-west-2.compute.amazonaws.com
+    ServerAdmin admin@35.167.27.204
+    WSGIDaemonProcess catalog python-path=/var/www/catalog:/var/www/catalog/venv/lib/python2.7/site-packages
+    WSGIProcessGroup catalog
+    WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+    <Directory /var/www/catalog/catalog/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static /var/www/catalog/catalog/static
+    <Directory /var/www/catalog/catalog/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+Save and exit the file. 
+
+Now, enable the virtual host by running `sudo a2ensite catalog` followed by `sudo service apache2 restart`.
+
