@@ -88,13 +88,35 @@ sudo apt install libapache2-mod-wsgi
 sudo apt install postgresql
 ```
 
-## Step 7: Configure Pip, Virtualenv, Flask, and Dependencies
+## Step 7: Configure `postgres`
+Now that we have `postgresql` installed, we will configure our database by running
+```
+sudo su - postgres
+psql
+```
+Then enter the following commands, making sure that you are inside the postgresql shell:
+```
+CREATE USER catalog WITH PASSWORD 'password';
+ALTER USER catalog CREATEDB;
+CREATE DATABASE catalog WITH OWNER catalog;
+\c catalog;
+REVOKE ALL ON SCHEMA public FROM public;
+GRANT ALL ON SCHEMA public TO catalog;
+\q
+exit
+```
+
+## Step 8: Configure Pip, Virtualenv, Flask, and Dependencies
 Back in the remote instance terminal, run the following:
 ```
 sudo apt install python-pip
 sudo pip install virtualenv
 ```  
-Now navigate to `/var/www` and `sudo mkdir catalog`.  Then run the following:
+Now navigate to `/var/www` and create a new directory called 'catalog'. Then navigate inside that folder by running `cd catalog` and then run:
+```
+sudo git clone https://github.com/xr71/catalog-flask-app.git catalog
+```
+Then run the following:
 ```
 sudo chown grader:grader catalog
 cd catalog
@@ -108,13 +130,18 @@ logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0, "/var/www/catalog/")
 
 from catalog import app as application
+application.secret_key = 'SUPERSECRETKEY!'
 ```
-Then save and exit the file.   
-While still inside the `catalog` directory, make sure to
-TODO
-TODO
-TODO
-change the primary Flask file `app.py` to `__init__.py` by running `mv app.py __init__.py`  
+Then save and exit the file.  
+
+Now, change the primary Flask file, a.k.a., `app.py`, to `__init__.py` by running `mv app.py __init__.py` 
+Edit `__init__.py` such that you remove the following lines:
+```
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
+```
+Now save, close (make sure you were in sudo) the file and make sure you navigate back to `/var/www/catalog`.  
+
 Then run the following to create the right Python environment along with all the dependencies needed to run our Flask app:
 ```
 sudo virtualenv venv
@@ -124,10 +151,24 @@ ls -al (to confirm venv and its all file permissions)
 ```
 Now we can install flask and all the other dependencies needed to run our webapp:
 ```
-pip install Flask httplib2 oauth2client sqlalchemy psycopg2
+pip install Flask httplib2 oauth2client sqlalchemy psycopg2 requests 
 ```
+## Step 9: Modify Flask app for postgresql and AWS Compliant Google Client File
+Back inside our `/var/www/catalog/catalog` directory, run `sudo vim __init__.py` and modify the sqlalchemy engine by updating the driver resource to
+```
+engine = create_engine('postgresql://catalog:password@localhost/catalog')
+```
+and make sure to save, close the file.
 
-Now, modify the create and modify our configuration file by running
+**very important:** make sure to modify the contents of `config.py` such that the client_secrets.json is read with an expicit path, like so:
+```
+CLIENT_ID = json.loads(open('/var/www/catalog/catalog/client_secrets.json', 'r').read())['web']['client_id']
+```
+Also, in order for Google OAuth to work, I needed to update my authorized domain and origin in the Google Cloud Console to include the hostname and ip address of my AWS Lightsail instance. 
+
+
+## Step 10: Conf and Run the App!
+Now, create and modify our configuration file by running
 `sudo vim /etc/apache2/sites-available/catalog.conf`
 and pasting in the following contentns:
 ```
@@ -156,3 +197,8 @@ Save and exit the file.
 
 Now, enable the virtual host by running `sudo a2ensite catalog` followed by `sudo service apache2 restart`.
 
+
+
+# References:
+http://flask.pocoo.org/docs/1.0/deploying/mod_wsgi/
+https://stackoverflow.com/questions/4731364/internal-error-500-apache-but-nothing-in-the-logs
